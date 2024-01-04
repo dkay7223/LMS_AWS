@@ -1,0 +1,21 @@
+name: Automating Containerization
+
+on:
+  push:
+   branches: [ main ]
+  pull_request:
+    branches: [ main ]
+      
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v1
+    - name: Build & Push Image
+      run: |
+        echo "${{ secrets.DOCKERPW }}" | docker login -u "dkay7223" --password-stdin 
+        docker build -t backend .
+        docker tag backend dkay7223/aws_backend
+        docker push dkay7223/aws_backend
